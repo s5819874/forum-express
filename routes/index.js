@@ -1,4 +1,5 @@
 const restController = require('../controllers/restController')
+const adminController = require('../controllers/adminController')
 
 module.exports = (app) => {
 
@@ -7,5 +8,12 @@ module.exports = (app) => {
   })
 
   app.get('/restaurants', restController.getRestaurants)
+
+  app.get('/admin', (req, res) => {
+    res.redirect('/admin/restaurants')
+  })
+
+  app.get('/admin/restaurants', adminController.getRestaurants)
+
 
 }
