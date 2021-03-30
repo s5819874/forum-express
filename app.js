@@ -18,13 +18,14 @@ app.use(session({
   saveUninitialized: false
 }))
 app.use(flash())
+app.use(passport.initialize())
+app.use(passport.session())
 app.use((req, res, next) => {
   res.locals.success_msg = req.flash('success_msg')
   res.locals.warning_msg = req.flash('warning_msg')
+  res.locals.user = req.user
   next()
 })
-app.use(passport.initialize())
-app.use(passport.session())
 
 require('./routes')(app, passport)
 
