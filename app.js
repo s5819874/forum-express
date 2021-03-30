@@ -6,6 +6,7 @@ const bodyParser = require('body-parser')
 const session = require('express-session')
 const flash = require('connect-flash')
 const passport = require('./config/passport')
+const methodOverride = require('method-override')
 const port = 3000
 
 app.engine('hbs', exphbs({ defaultLayout: 'main', extname: '.hbs' }))
@@ -26,6 +27,7 @@ app.use((req, res, next) => {
   res.locals.user = req.user
   next()
 })
+app.use(methodOverride('_method'))
 
 require('./routes')(app, passport)
 
