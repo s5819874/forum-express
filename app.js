@@ -28,6 +28,7 @@ app.use((req, res, next) => {
   next()
 })
 app.use(methodOverride('_method'))
+app.use('/upload', express.static(__dirname + '/upload'))
 
 require('./routes')(app, passport)
 
