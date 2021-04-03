@@ -11,6 +11,7 @@ const flash = require('connect-flash')
 const passport = require('./config/passport')
 const methodOverride = require('method-override')
 const port = process.env.PORT || 3000
+const helpers = require('../_helpers')
 
 app.engine('hbs', exphbs({ defaultLayout: 'main', extname: '.hbs' }))
 app.set('view engine', 'hbs')
@@ -27,7 +28,7 @@ app.use(passport.session())
 app.use((req, res, next) => {
   res.locals.success_msg = req.flash('success_msg')
   res.locals.warning_msg = req.flash('warning_msg')
-  res.locals.user = req.user
+  res.locals.user = helpers.getUser(req)
   next()
 })
 app.use(methodOverride('_method'))
