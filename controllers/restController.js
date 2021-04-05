@@ -15,6 +15,18 @@ const restController = {
         return data
       })
       .then(data => { return res.render('restaurants', { restaurants: data }) })
+      .catch(err => res.send(err))
+  },
+  getRestaurant: (req, res) => {
+    return Restaurant.findByPk(req.params.id, {
+      include: Category
+    })
+      .then(restaurant => {
+        return res.render('restaurant', {
+          restaurant: restaurant.toJSON()
+        })
+      })
+      .catch(err => res.send(err))
   }
 }
 
