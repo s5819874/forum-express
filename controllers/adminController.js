@@ -15,7 +15,10 @@ const adminController = {
       .catch(err => res.send(err))
   },
   createRestaurant: (req, res) => {
-    return res.render('admin/create')
+    Category.findAll({ raw: true, nest: true })
+      .then(categories => {
+        return res.render('admin/create', { categories })
+      })
   },
   postRestaurant: (req, res) => {
     const { name, tel, address, opening_hours, description } = req.body
@@ -62,7 +65,10 @@ const adminController = {
   editRestaurant: (req, res) => {
     return Restaurant.findByPk(req.params.id, { raw: true })
       .then(restaurant => {
-        return res.render('admin/create', { restaurant })
+        Category.findAll({ raw: true, nest: true })
+          .then(categories => {
+            return res.render('admin/create', { restaurant, categories })
+          })
       })
       .catch(err => res.send(err))
   },
