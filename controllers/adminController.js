@@ -64,11 +64,11 @@ const adminController = {
       .catch(err => res.send(err))
   },
   editRestaurant: (req, res) => {
-    return Restaurant.findByPk(req.params.id, { raw: true, nest: true })
+    return Restaurant.findByPk(req.params.id)
       .then(restaurant => {
         Category.findAll({ raw: true, nest: true })
           .then(categories => {
-            return res.render('admin/create', { restaurant, categories })
+            return res.render('admin/create', { restaurant: restaurant.toJSON(), categories })
           })
       })
       .catch(err => res.send(err))
