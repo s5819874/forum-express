@@ -34,7 +34,7 @@ const adminController = {
 
         return Restaurant.create({
           name, tel, address, opening_hours, description,
-          image: file ? img.data.link : null
+          image: file ? img.data.link : null, CategoryId: req.body.categoryId
         })
           .then(restaurant => {
             req.flash('success_msg', 'restaurant was successfully created')
@@ -46,7 +46,8 @@ const adminController = {
     } else {
       return Restaurant.create({
         name, tel, address, opening_hours, description,
-        image: file ? `/upload/${file.originalname}` : null
+        image: file ? `/upload/${file.originalname}` : null,
+        CategoryId: req.body.categoryId
       })
         .then(restaurant => {
           req.flash('success_msg', 'restaurant was successfully created')
@@ -63,7 +64,7 @@ const adminController = {
       .catch(err => res.send(err))
   },
   editRestaurant: (req, res) => {
-    return Restaurant.findByPk(req.params.id, { raw: true })
+    return Restaurant.findByPk(req.params.id, { raw: true, nest: true })
       .then(restaurant => {
         Category.findAll({ raw: true, nest: true })
           .then(categories => {
@@ -91,7 +92,8 @@ const adminController = {
               address: req.body.address,
               opening_hours: req.body.opening_hours,
               description: req.body.description,
-              image: file ? img.data.link : restaurant.image
+              image: file ? img.data.link : restaurant.image,
+              CategoryId: req.body.categoryId
             })
               .then((restaurant) => {
                 req.flash('success_messages', 'restaurant was successfully updated')
@@ -110,7 +112,8 @@ const adminController = {
             address: req.body.address,
             opening_hours: req.body.opening_hours,
             description: req.body.description,
-            image: restaurant.image
+            image: restaurant.image,
+            CategoryId: req.body.categoryId
           }).then((restaurant) => {
             req.flash('success_messages', 'restaurant was successfully to update')
             res.redirect('/admin/restaurants')
