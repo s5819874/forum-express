@@ -74,10 +74,6 @@ const adminController = {
       .catch(err => res.send(err))
   },
   putRestaurant: (req, res) => {
-    if (!req.body.name) {
-      req.flash('error_messages', "name didn't exist")
-      return res.redirect('back')
-    }
     const { file } = req
     if (file) {
       imgur.setClientID(IMGUR_CLIENT_ID)
