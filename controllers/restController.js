@@ -60,6 +60,7 @@ const restController = {
       ]
     })
       .then(restaurant => {
+        console.log(restaurant)
         return res.render('restaurant', {
           restaurant: restaurant.toJSON()
         })
