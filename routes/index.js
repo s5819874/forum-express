@@ -24,6 +24,14 @@ module.exports = (app, passport) => {
     res.redirect('/signin')
   }
 
+  const checkOneSelf = (req, res, next) => {
+    if (helpers.getUser(req).id !== req.params.id) {
+      req.flash('warning_msg', '非本人！無法使用此功能')
+      return res.redirect('back')
+    }
+    return next()
+  }
+
   app.get('/', authenticated, (req, res) => {
     res.redirect('/restaurants')
   })
@@ -35,8 +43,8 @@ module.exports = (app, passport) => {
   app.delete('/comments/:id', authenticatedAdmin, commentController.deleteComment)
 
   app.get('/users/:id', authenticated, userController.getUser)
-  app.get('/users/:id/edit', authenticated, userController.editUser)
-  app.put('/users/:id', authenticated, upload.single('image'), userController.putUser)
+  app.get('/users/:id/edit', authenticated, checkOneSelf, userController.editUser)
+  app.put('/users/:id', authenticated, upload.single('image'), checkOneSelf, userController.putUser)
 
   app.get('/admin', authenticatedAdmin, (req, res) => {
     res.redirect('/admin/restaurants')

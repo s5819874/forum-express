@@ -8,6 +8,7 @@
     <h1>{{user.name}}</h1>
     <ul class="list-unstyled">
       <li><strong>Email:</strong> {{user.email}}</li>
+      <p><strong>{{commentCount}}</strong> 已評論餐廳</p>
     </ul>
     <a href='/users/{{user.id}}/edit'>
       <button type="button" class="btn btn-primary">Edit</button>
@@ -19,14 +20,21 @@
 <br />
 
 <div class="row">
-  {{#each comments}}
-  <div class="card" style="width:200px">
-    <img class="card-img-top" src="{{this.restaurantImage}}" alt="Card image">
-    <div class="card-body">
-      <h4 class="card-title">{{this.restaurantName}}</h4>
-      <p class="card-text">{{this.text}}</p>
-      <a href="/restaurants/{{this.RestaurantId}}" class="btn btn-primary">See Restaurant</a>
-    </div>
+  <div class="col-12 bg-secondary text-white">
+    <p class="mb-0 py-2"><strong>{{commentCount}}</strong> 已評論餐廳</p>
   </div>
+  {{#each restaurantList}}
+  <br>
+  <div class="col-3 bg-white pt-3">
+    <a class="d-flex flex-row align-items-center" href="/restaurants/{{this.id}}">
+      <img class="img-responsive center-block" src="{{this.image}}" alt="restaurant avatar"
+        style="width: 100px;margin-bottom: 25px;margin-right: 10px">
+      <p class="ml-4">{{this.name}}</p>
+    </a>
+  </div>
+  <div class="col-9 bg-white pt-3">
+    <p style="line-height: 58px;">{{this.comment}}</p>
+  </div>
+  <br />
   {{/each}}
 </div>
