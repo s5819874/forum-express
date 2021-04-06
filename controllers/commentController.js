@@ -4,7 +4,7 @@ const Comment = db.Comment
 const commentController = {
   postComment: (req, res) => {
     return Comment.create({
-      text,
+      text: req.body.text,
       RestaurantId: req.body.restaurantId,
       UserId: req.user.id
     })
