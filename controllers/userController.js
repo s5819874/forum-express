@@ -5,6 +5,7 @@ const Restaurant = db.Restaurant
 const Comment = db.Comment
 const imgur = require('imgur-node-api')
 const IMGUR_CLIENT_ID = process.env.IMGUR_CLIENT_ID
+const helpers = require('../_helpers')
 
 const userController = {
   signUpPage: (req, res) => {
@@ -49,6 +50,7 @@ const userController = {
     res.redirect('/signin')
   },
   getUser: (req, res) => {
+    const check = (helpers.getUser(req).id === Number(req.params.id))
     User.findByPk(req.params.id, {
       include: [
         { model: Comment, include: [Restaurant] }
@@ -62,7 +64,8 @@ const userController = {
         res.render('profile', {
           user: user.toJSON(),
           commentCount,
-          restaurantList
+          restaurantList,
+          check
         })
       })
       .catch(err => res.send(err))

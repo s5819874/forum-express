@@ -25,12 +25,13 @@ module.exports = (app, passport) => {
   }
 
   const checkOneSelf = (req, res, next) => {
-    if (helpers.getUser(req).id != req.params.id) {
+    if (helpers.getUser(req).id === Number(req.params.id)) {
       console.log(helpers.getUser(req).id)
       console.log(req.params.id)
       req.flash('warning_msg', '非本人！無法使用此功能')
       return res.redirect('back')
     }
+    res.locals.checkOneSelf = true
     return next()
   }
 

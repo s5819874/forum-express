@@ -10,9 +10,11 @@
       <li><strong>Email:</strong> {{user.email}}</li>
       <p><strong>{{commentCount}}</strong> 已評論餐廳</p>
     </ul>
+    {{#if check}}
     <a href='/users/{{user.id}}/edit'>
       <button type="button" class="btn btn-primary">Edit</button>
     </a>
+    {{/if}}
   </div>
 </div>
 
