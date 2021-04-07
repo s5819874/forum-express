@@ -26,8 +26,10 @@ const restController = {
       .then(restaurants => {
         //page settings
         const page = Number(req.query.page) | 1
+        console.log(page)
         const maxPage = Math.ceil(restaurants.count / pageLimit)
-        const pageList = Array.from({ lengh: maxPage }).map((item, index) => index + 1)
+        const pageList = Array.from({ length: maxPage }).map((item, index) => { return index + 1 })
+        console.log(pageList)
         const prev = page - 1 < 1 ? 1 : page - 1
         const next = page + 1 > maxPage ? maxPage : page + 1
 
