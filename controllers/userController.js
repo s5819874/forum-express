@@ -50,7 +50,7 @@ const userController = {
     res.redirect('/signin')
   },
   getUser: (req, res) => {
-    const check = (helpers.getUser(req).id === Number(req.params.id))
+    const check = (Number(helpers.getUser(req).id) === Number(req.params.id))
     User.findByPk(req.params.id, {
       include: [
         { model: Comment, include: [Restaurant] }
