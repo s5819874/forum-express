@@ -56,13 +56,13 @@ const userController = {
         { model: Comment, include: [Restaurant] }
       ]
     })
-      .then(user => {
-        const commentCount = user.Comments.length
-        const restaurantList = user.Comments.map(comment => ({
+      .then(result => {
+        const commentCount = result.Comments.length
+        const restaurantList = result.Comments.map(comment => ({
           ...comment.Restaurant.dataValues, comment: comment.text
         }))
         res.render('profile', {
-          user: user.toJSON(),
+          result: result.toJSON(),
           commentCount,
           restaurantList,
           check

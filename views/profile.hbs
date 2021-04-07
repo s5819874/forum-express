@@ -5,13 +5,13 @@
     </div>
   </div>
   <div class="col-md-8">
-    <h1>{{user.name}}</h1>
+    <h1>{{result.name}}</h1>
     <ul class="list-unstyled">
-      <li><strong>Email:</strong> {{user.email}}</li>
+      <li><strong>Email:</strong> {{result.email}}</li>
       <p><strong>{{commentCount}}</strong> 已評論餐廳</p>
     </ul>
     {{#if check}}
-    <a href='/users/{{user.id}}/edit'>
+    <a href='/users/{{result.id}}/edit'>
       <button type="button" class="btn btn-primary">Edit</button>
     </a>
     {{/if}}
