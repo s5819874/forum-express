@@ -90,6 +90,23 @@ const restController = {
           restaurants
         })
       })
+  },
+  getDashboard: (req, res) => {
+    return Restaurant.findByPk(req.params.id, {
+      include: [
+        Category,
+        Comment
+      ]
+    })
+      .then(restaurant => {
+        if (!restaurant) {
+          req.flash('warning_msg', '無此餐廳！')
+          return res.redirect('/restaurants')
+        }
+        res.render('dashBoard', {
+          restaurant: restaurant.toJSON(),
+        })
+      })
   }
 }
 
