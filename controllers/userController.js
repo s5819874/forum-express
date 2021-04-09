@@ -4,9 +4,11 @@ const User = db.User
 const Restaurant = db.Restaurant
 const Comment = db.Comment
 const Favorite = db.Favorite
+const Like = db.Like
 const imgur = require('imgur-node-api')
 const IMGUR_CLIENT_ID = process.env.IMGUR_CLIENT_ID
 const helpers = require('../_helpers')
+//const { like } = require('sequelize/types/lib/operators')
 
 const userController = {
   signUpPage: (req, res) => {
@@ -119,7 +121,6 @@ const userController = {
     }
   },
   addFavorite: (req, res) => {
-    console.log(helpers.getUser(req).id)
     return Favorite.create({
       RestaurantId: req.params.restaurantId,
       UserId: helpers.getUser(req).id
@@ -139,8 +140,28 @@ const userController = {
           .then(() => res.redirect('back'))
       })
       .catch(err => res.send(err))
+  },
+  likeRestaurant: (req, res) => {
+    return Like.create({
+      RestaurantId: req.params.restaurantId,
+      UserId: helpers.getUser(req).id
+    })
+      .then(() => res.redirect('back'))
+      .catch(err => res.send(err))
+  },
+  unlikeRestaurant: (req, res) => {
+    return Like.findOne({
+      where: {
+        RestaurantId: req.params.restaurantId,
+        UserId: helpers.getUser(req).id
+      }
+    })
+      .then(like => {
+        like.destroy()
+          .then(() => res.redirect('back'))
+      })
+      .catch(err => res.send(err))
   }
-
 }
 
 module.exports = userController
