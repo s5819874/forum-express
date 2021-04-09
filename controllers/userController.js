@@ -3,6 +3,7 @@ const db = require('../models')
 const User = db.User
 const Restaurant = db.Restaurant
 const Comment = db.Comment
+const Favorite = db.Favorite
 const imgur = require('imgur-node-api')
 const IMGUR_CLIENT_ID = process.env.IMGUR_CLIENT_ID
 const helpers = require('../_helpers')
@@ -116,7 +117,30 @@ const userController = {
         })
         .catch(err => res.send(err))
     }
+  },
+  addFavorite: (req, res) => {
+    console.log(helpers.getUser(req).id)
+    return Favorite.create({
+      RestaurantId: req.params.restaurantId,
+      UserId: helpers.getUser(req).id
+    })
+      .then(() => res.redirect('back'))
+      .catch(err => res.send(err))
+  },
+  removeFavorite: (req, res) => {
+    return Favorite.findOne({
+      where: {
+        RestaurantId: req.params.restaurantId,
+        UserId: helpers.getUser(req).id
+      }
+    })
+      .then(favorite => {
+        favorite.destroy()
+          .then(() => res.redirect('back'))
+      })
+      .catch(err => res.send(err))
   }
+
 }
 
 module.exports = userController
