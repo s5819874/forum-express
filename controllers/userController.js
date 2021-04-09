@@ -170,15 +170,11 @@ const userController = {
       ]
     })
       .then(users => {
-        const x = users.length
         users = users.map(user => ({
           ...user.dataValues,
           FollowerCount: user.Followers.length,
           isFollowed: helpers.getUser(req).Followees.map(d => d.id).includes(user.id)
         }))
-        const y = users.length
-        console.log(x, y)
-        console.log(users)
         users = users.sort((a, b) => b.FollowerCount - a.FollowerCount)
         const loginId = helpers.getUser(req).id
         return res.render('topUsers', { users, loginId })

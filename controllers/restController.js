@@ -5,6 +5,7 @@ const Comment = db.Comment
 const User = db.User
 const pageLimit = 10
 const helpers = require('../_helpers')
+const sequelize = require('sequelize')
 
 const restController = {
   getRestaurants: (req, res) => {
@@ -118,6 +119,36 @@ const restController = {
           restaurant: restaurant.toJSON(),
         })
       })
+  },
+  getTopRestaurants: (req, res) => {
+    return Restaurant.findAll({
+      attributes: {
+        include: [
+          [
+            sequelize.literal(`(
+              SELECT COUNT(*)
+              FROM favorites AS favorite
+              WHERE
+                favorite.RestaurantId = Restaurant.id
+                )`),
+            'favoriteCount',
+          ],
+        ]
+      },
+      include: { model: User, as: 'FavoritedUsers' },
+      order: [
+        [sequelize.literal('favoriteCount'), 'DESC']
+      ],
+      limit: 10,
+    })
+      .then(restaurants => {
+        restaurants = restaurants.map(r => ({
+          ...r.dataValues,
+          isFavorite: r.FavoritedUsers.map(d => d.id).includes(helpers.getUser(req).id)
+        }))
+        res.render('topRestaurants', { restaurants })
+      })
+      .catch(err => res.send(err))
   }
 }
 
