@@ -23,7 +23,9 @@ const restController = {
       include: [Category],
       where: whereQuery,
       offset: offset,
-      limit: pageLimit
+      limit: pageLimit,
+      raw: true,
+      nest: true
     })
       .then(restaurants => {
         //page settings
