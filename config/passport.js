@@ -20,7 +20,7 @@ passport.use(new LocalStrategy(
         if (!bcrypt.compareSync(password, user.password)) return cb(null, false, req.flash('warning_msg', '帳號或密碼輸入錯誤！'))
         return cb(null, user)
       })
-      .catch(err => res.send(err))
+      .catch(err => console.log(err))
   }
 ))
 
@@ -41,7 +41,7 @@ passport.deserializeUser((id, cb) => {
       user = user.toJSON()
       return cb(null, user)
     })
-    .catch(err => res.send(err))
+    .catch(err => console.log(err))
 })
 
 module.exports = passport
