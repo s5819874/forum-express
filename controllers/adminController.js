@@ -25,40 +25,14 @@ const adminController = {
       })
   },
   postRestaurant: (req, res) => {
-    const { name, tel, address, opening_hours, description } = req.body
-    if (!name) {
-      req.flash('warning_msg', '請填寫名稱')
+    adminService.postRestaurant(req, res, (data) => {
+      if (data.status === 'success') {
+        req.flash('sucess_msg', data.message)
+        return res.redirect('/admin/restaurants')
+      }
+      req.flash('warning_msg', data.message)
       return res.redirect('back')
-    }
-    const { file } = req
-    if (file) {
-      imgur.setClientID(IMGUR_CLIENT_ID)
-      imgur.upload(file.path, (err, img) => {
-        if (err) console.log(err)
-
-        return Restaurant.create({
-          name, tel, address, opening_hours, description,
-          image: file ? img.data.link : null, CategoryId: req.body.categoryId
-        })
-          .then(restaurant => {
-            req.flash('success_msg', 'restaurant was successfully created')
-            res.redirect('/admin/restaurants')
-          })
-          .catch(err => res.send(err))
-
-      })
-    } else {
-      return Restaurant.create({
-        name, tel, address, opening_hours, description,
-        image: file ? `/upload/${file.originalname}` : null,
-        CategoryId: req.body.categoryId
-      })
-        .then(restaurant => {
-          req.flash('success_msg', 'restaurant was successfully created')
-          res.redirect('/admin/restaurants')
-        })
-        .catch(err => res.send(err))
-    }
+    })
   },
   editRestaurant: (req, res) => {
     return Restaurant.findByPk(req.params.id)
