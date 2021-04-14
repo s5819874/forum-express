@@ -60,6 +60,47 @@ const adminService = {
         .catch(err => res.send(err))
     }
   },
+  putRestaurant: (req, res, callback) => {
+    const { file } = req
+    if (file) {
+      imgur.setClientID(IMGUR_CLIENT_ID)
+      imgur.upload(file.path, (err, img) => {
+        if (err) console.log(err)
+
+        return Restaurant.findByPk(req.params.id)
+          .then((restaurant) => {
+            restaurant.update({
+              name: req.body.name,
+              tel: req.body.tel,
+              address: req.body.address,
+              opening_hours: req.body.opening_hours,
+              description: req.body.description,
+              image: file ? img.data.link : restaurant.image,
+              CategoryId: req.body.categoryId
+            })
+              .then((restaurant) => {
+                callback({ status: 'success', message: 'restaurant was successfully updated' })
+              })
+              .catch(err => res.send(err))
+          })
+      })
+    } else {
+      return Restaurant.findByPk(req.params.id)
+        .then((restaurant) => {
+          restaurant.update({
+            name: req.body.name,
+            tel: req.body.tel,
+            address: req.body.address,
+            opening_hours: req.body.opening_hours,
+            description: req.body.description,
+            image: restaurant.image,
+            CategoryId: req.body.categoryId
+          }).then((restaurant) => {
+            callback({ status: 'success', message: 'restaurant was successfully updated' })
+          })
+        })
+    }
+  },
   deleteRestaurant: (req, res, callback) => {
     return Restaurant.findByPk(req.params.id)
       .then(restaurant => {
