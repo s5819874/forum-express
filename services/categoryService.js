@@ -26,6 +26,15 @@ const categoryService = {
       .then(() =>
         callback({ status: 'success', message: '' })
       )
+  },
+  putCategory: (req, res, callback) => {
+    return Category.findByPk(req.params.id)
+      .then((category) => {
+        category.update(req.body)
+          .then((category) => {
+            callback({ status: 'success', message: '' })
+          })
+      })
   }
 }
 

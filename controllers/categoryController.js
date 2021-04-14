@@ -18,13 +18,11 @@ let categoryController = {
     })
   },
   putCategory: (req, res) => {
-    return Category.findByPk(req.params.id)
-      .then((category) => {
-        category.update(req.body)
-          .then((category) => {
-            res.redirect('/admin/categories')
-          })
-      })
+    categoryService.putCategory(req, res, (data) => {
+      if (data.status === 'success') {
+        return res.redirect('/admin/categories')
+      }
+    })
   },
   deleteCategory: (req, res) => {
     return Category.findByPk(req.params.id)
