@@ -12,6 +12,11 @@ let categoryController = {
     categoryService.getCategories(req, res, (data) => {
       return res.json(data)
     })
+  },
+  postCategory: (req, res) => {
+    categoryService.postCategory(req, res, (data) => {
+      return res.json(data)
+    })
   }
 }
 

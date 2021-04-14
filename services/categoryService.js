@@ -16,6 +16,16 @@ const categoryService = {
         return callback({ categories })
       }
     })
+  },
+  postCategory: (req, res, callback) => {
+    const { name } = req.body
+    if (!name) {
+      callback({ status: 'error', message: '請輸入名稱' })
+    }
+    return Category.create({ name })
+      .then(() =>
+        callback({ status: 'success', message: '' })
+      )
   }
 }
 

@@ -1,6 +1,7 @@
 const db = require('../models')
 const Category = db.Category
 const categoryService = require('../services/categoryService')
+
 let categoryController = {
   getCategories: (req, res) => {
     categoryService.getCategories(req, res, (data) => {
@@ -8,13 +9,13 @@ let categoryController = {
     })
   },
   postCategory: (req, res) => {
-    const { name } = req.body
-    if (!name) {
-      req.flash('warning_msg', '請輸入名稱')
-      return res.redirect('back')
-    }
-    return Category.create({ name })
-      .then(() => res.redirect('/admin/categories'))
+    categoryService.postCategory(req, res, (data) => {
+      if (data.status === 'error') {
+        req.flash('warning_msg', data.message)
+        return res.redirect('back')
+      }
+      res.redirect('/admin/categories')
+    })
   },
   putCategory: (req, res) => {
     return Category.findByPk(req.params.id)
